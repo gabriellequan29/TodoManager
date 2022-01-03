@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { useParams } from "react-router-dom"
 
-export default class WelcomeComponent extends Component {
-    render() {
-        return (
-            <div>
-                <h1>Welcome!</h1>
+export default function WelcomeComponent() {
+   
+    let {name} = useParams()
+    return <div>
+                <h1>{name} Welcome to your Todo Application!</h1>
             </div>
-        )
-    }
 }
+

@@ -12,7 +12,7 @@ class TodoApp extends Component {
                     <Routes>
                         <Route path="/" element={<LoginComponent />}/>
                         <Route path="/login" element={<LoginComponent />}/>
-                        <Route path="/welcome" element={<WelcomeComponent />}/>
+                        <Route path="/welcome/:name" element={<WelcomeComponent />}/>
 
                         <Route path="*" element={<ErrorComponent />}/>
                     </Routes>
