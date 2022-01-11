@@ -7,7 +7,7 @@ import ListTodosComponent from './ListTodosComponent'
 import Header from './Header'
 import Footer from './Footer'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import AuthenticationService from './AuthenticationService'
+import AuthenticatedRoute from './AuthenticatedRoute'
 
 class TodoApp extends Component {
     render() {
@@ -19,9 +19,16 @@ class TodoApp extends Component {
                     <Routes>
                         <Route path="/" element={<LoginComponent />}/>
                         <Route path="/login" element={<LoginComponent />}/>
-                        <Route path="/logout" element={<LogoutComponent />}/>
-                        <Route path="/welcome/:name" element={<WelcomeComponent />}/>
-                        <Route path="/todos" element={<ListTodosComponent />}/>
+                        <Route path="/logout" element={<AuthenticatedRoute />}>
+                            <Route path="/logout" element={<LogoutComponent />}/>
+                        </Route>
+                        <Route path="/welcome/:name" element={<AuthenticatedRoute />}>
+                            <Route path="/welcome/:name" element={<WelcomeComponent />}/>
+                        </Route>
+                        <Route path="/todos" element={<AuthenticatedRoute />}>
+                            <Route path="/todos" element={<ListTodosComponent />}/> 
+                        </Route>
+                        
                         <Route path="*" element={<ErrorComponent />}/>
                     </Routes>
                     <Footer />
