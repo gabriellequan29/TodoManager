@@ -1,16 +1,21 @@
 import React, { Component } from 'react'
+import TodoService from '../../api/todo/TodoService'
+import AuthenticationService from './AuthenticationService'
 
 export default class ListTodosComponent extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            todos: [
-                {id:1, description: "todo_1", completed: false, targetDate: new Date()},
-                {id:2, description: "todo_2", completed: false, targetDate: new Date()},
-                {id:3, description: "todo_3", completed: true, targetDate: new Date()},
-            ]
+            todos: []
         }
+
+        this.refreshTodos = this.refreshTodos.bind(this)
+    }
+
+    componentDidMount() {
+        this.refreshTodos()
+
     }
 
     render() {
@@ -42,5 +47,16 @@ export default class ListTodosComponent extends Component {
                 </div>
             </div>
         )
+    }
+
+    refreshTodos() {
+        let username = AuthenticationService.getLoggedInUserName()
+        TodoService.getAllTodos(username)
+            .then(
+                response => this.setState({
+                    todos: response.data
+                })
+            )
+
     }
 }
