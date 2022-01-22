@@ -4,6 +4,7 @@ import LogoutComponent from './LogoutComponent'
 import WelcomeComponent from './WelcomeComponent'
 import ErrorComponent from './ErrorComponent'
 import ListTodosComponent from './ListTodosComponent'
+import TodoComponent from './TodoComponent'
 import Header from './Header'
 import Footer from './Footer'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
@@ -27,6 +28,9 @@ class TodoApp extends Component {
                         </Route>
                         <Route path="/todos" element={<AuthenticatedRoute />}>
                             <Route path="/todos" element={<ListTodosComponent />}/> 
+                        </Route>
+                        <Route path="/todos/:id" element={<AuthenticatedRoute />}>
+                            <Route path="/todos/:id" element={<TodoComponent />}/> 
                         </Route>
                         
                         <Route path="*" element={<ErrorComponent />}/>

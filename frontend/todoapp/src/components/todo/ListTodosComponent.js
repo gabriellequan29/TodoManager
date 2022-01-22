@@ -1,16 +1,20 @@
 import React, { Component } from 'react'
+import { useNavigate } from 'react-router-dom';
 import TodoService from '../../api/todo/TodoService'
 import AuthenticationService from './AuthenticationService'
 
-export default class ListTodosComponent extends Component {
+class ListTodosComponent extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            todos: []
+            todos: [],
+            message: null
         }
 
         this.refreshTodos = this.refreshTodos.bind(this)
+        this.updateTodo = this.updateTodo.bind(this)
+        this.deleteTodo = this.deleteTodo.bind(this)
     }
 
     componentDidMount() {
@@ -22,13 +26,15 @@ export default class ListTodosComponent extends Component {
         return (
             <div>
                 <h1>List Todos</h1>
+                {this.state.message && <div className="alert alert-success">{this.state.message}</div>}
                 <div className="container">
                     <table className="table">
                         <thead>
                             <tr>
-                                <th>description</th>
-                                <th>completed</th>
-                                <th>estimated date</th>
+                                <th>Description</th>
+                                <th>Completed</th>
+                                <th>Target Date</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,6 +45,8 @@ export default class ListTodosComponent extends Component {
                                             <td>{todo.description}</td>
                                             <td>{todo.completed.toString()}</td>
                                             <td>{todo.targetDate.toString()}</td>
+                                            <td><button className='btn btn-danger' onClick={() => this.updateTodo(todo.id)}>Edit</button></td>
+                                            <td><button className='btn btn-danger' onClick={() => this.deleteTodo(todo.id)}>Remove</button></td>
                                         </tr>
                                 )
                             }
@@ -57,6 +65,27 @@ export default class ListTodosComponent extends Component {
                     todos: response.data
                 })
             )
+    }
 
+    updateTodo(id) {
+        this.props.navigate(`/todos/${id}`)
+    }
+
+    deleteTodo(id) {
+        let username = AuthenticationService.getLoggedInUserName()
+        TodoService.deleteTodo(username, id)
+            .then(
+                response => {
+                    this.setState({message: `Todo with id ${id} was deleted`})
+                    this.refreshTodos()
+                }
+            )
     }
 }
+
+function ListTodosComponentWithNavigate(props) {
+    const navigate = useNavigate();
+    return <ListTodosComponent {...props} navigate={navigate} />
+}
+
+export default ListTodosComponentWithNavigate
