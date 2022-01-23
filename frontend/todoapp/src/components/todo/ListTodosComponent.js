@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TodoService from '../../api/todo/TodoService'
-import AuthenticationService from './AuthenticationService'
+import TodoService from '../../api/todo/TodoService';
+import AuthenticationService from './AuthenticationService';
+import moment from 'moment';
 
 class ListTodosComponent extends Component {
     constructor(props) {
@@ -14,6 +15,7 @@ class ListTodosComponent extends Component {
 
         this.refreshTodos = this.refreshTodos.bind(this)
         this.updateTodo = this.updateTodo.bind(this)
+        this.addTodo = this.addTodo.bind(this)
         this.deleteTodo = this.deleteTodo.bind(this)
     }
 
@@ -44,7 +46,7 @@ class ListTodosComponent extends Component {
                                         <tr key={todo.id}>
                                             <td>{todo.description}</td>
                                             <td>{todo.completed.toString()}</td>
-                                            <td>{todo.targetDate.toString()}</td>
+                                            <td>{moment(todo.targetDate).format('YYYY-MM-DD')}</td>
                                             <td><button className='btn btn-danger' onClick={() => this.updateTodo(todo.id)}>Edit</button></td>
                                             <td><button className='btn btn-danger' onClick={() => this.deleteTodo(todo.id)}>Remove</button></td>
                                         </tr>
@@ -52,6 +54,9 @@ class ListTodosComponent extends Component {
                             }
                         </tbody>
                     </table>
+                    <div>
+                        <button className="btn btn-success" onClick={this.addTodo}>Add</button>
+                    </div>
                 </div>
             </div>
         )
@@ -70,6 +75,12 @@ class ListTodosComponent extends Component {
     updateTodo(id) {
         this.props.navigate(`/todos/${id}`)
     }
+
+    addTodo() {
+        this.props.navigate(`/todos/-1`)
+    }
+
+
 
     deleteTodo(id) {
         let username = AuthenticationService.getLoggedInUserName()
