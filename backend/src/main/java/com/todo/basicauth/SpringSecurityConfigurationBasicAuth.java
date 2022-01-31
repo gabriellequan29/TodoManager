@@ -1,4 +1,4 @@
-package com.todo.webservice.basicauth;
+package com.todo.basicauth;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

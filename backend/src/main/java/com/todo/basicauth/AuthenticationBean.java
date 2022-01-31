@@ -1,4 +1,4 @@
-package com.todo.webservice.basicauth;
+package com.todo.basicauth;
 
 public class AuthenticationBean {
     private String message;
